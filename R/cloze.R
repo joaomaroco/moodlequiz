@@ -70,12 +70,20 @@ NULL
 # >
 # > https://docs.moodle.org/405/en/Embedded_Answers_(Cloze)_question_type)
 escape_answers <- function(x) {
-  # Escape special characters with \
-  x <- gsub('([\\}#/"\\\\])', '\\\\\\1', x)
-
-  # Escape ~ with unicode (Moodle bug)
-  x <- gsub('~', '&#x007e;', x, fixed = TRUE)
-
+  # Escape Moodle-specific special characters: }, #, /, ", ~ ORIGINAL escape_answers
+  x <- gsub('([}#/"~])', '\\\\\\1', x)
+  
+  # Replace < and > with HTML entities to prevent HTML tag issues - added by joaomaroco
+  x <- gsub('<', '<', x)
+  x <- gsub('>', '>', x)
+  
+  # Escape other Moodle-relevant characters that could interfere  - added by joaomaroco
+  x <- gsub('%', '\\%', x)
+  x <- gsub('&', '&', x)
+  
+  # Note: Do NOT escape underscores (_) or backslashes (\) in LaTeX, 
+  # as they are valid in MathJax within \(...\)
+  
   x
 }
 
