@@ -13,6 +13,9 @@
 #' @param shuffle Logical. For `cloze_multichoice` and `cloze_singlechoice`, whether the answer options should be shuffled. Defaults to `FALSE`.
 #' @param answer A numeric value specifying the correct numerical answer(s).
 #' @param tolerance A numeric value specifying the acceptable range of deviation for `cloze_numerical` answers. Defaults to `0`.
+#' @param answer1,answer2 Numeric values for the two accepted correct answers.
+#' @param tolerance1,tolerance2 Acceptable deviation for each answer. Defaults to `0`.
+#' @param feedback1,feedback2 Feedback strings shown for each correct answer.
 #' @param x For `cloze()`, the correct answer which also determines the question type (e.g. `numeric` will use `cloze_numerical()` and `character` will use `cloze_shortanswer()` or `cloze_singlechoice()`/`cloze_multichoice()` if selectable options are given as the second argument).
 #' @param ... Additional arguments passed to other `cloze()` methods (such as the available options and other `cloze_*()` arguments).
 #'
@@ -157,6 +160,19 @@ cloze_numerical <- function(answer, weight = 1, tolerance = 0, feedback = "") {
   )
 }
 
+#' @rdname cloze_questions
+#' @export
+cloze_numerical2 <- function(answer1, answer2,
+                              tolerance1 = 0, tolerance2 = 0,
+                              weight = 1,
+                              feedback1 = "Correct", feedback2 = "Also correct") {
+  sprintf(
+    "`{%i:NUMERICAL:=%f:%f#%s~=%f:%f#%s}`{=html}",
+    weight,
+    answer1, tolerance1, feedback1,
+    answer2, tolerance2, feedback2
+  )
+}
 #' Create a set of choices for single or multiple choice questions
 #'
 #' @param options A character vector of selectable choices
